@@ -1,8 +1,9 @@
 name: Build and Deploy
+
 on:
   pull_request:
     types: [opened, synchronize]
-    
+
 jobs:
   run-test-cases:
     runs-on: ubuntu-latest
@@ -30,13 +31,8 @@ jobs:
       - name: Install project dependencies
         run: |
             if [ ! -d "node_modules" ]; then
-            npm ci -f
+              npm ci -f
             fi
-
-      - save_cache:
-          key: node_modules_cache_{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
 
       - name: Run test cases
         run: npm run coverage
@@ -47,13 +43,18 @@ jobs:
           name: discussion
           path: coverage
 
-      - name: install sonar scanner
+      - name: Install SonarScanner
         run: |
             cd /tmp
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip
-            unzip || sudo apt install unzip -y
+            if ! command -v unzip &> /dev/null; then
+              sudo apt-get install unzip -y
+            fi
             unzip sonar-scanner-6.1.0.4477.zip
             cd -
 
-      - name: Run sonar scanner
+      - name: Run SonarScanner
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
