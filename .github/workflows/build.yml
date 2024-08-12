@@ -46,10 +46,9 @@ jobs:
       - name: Install SonarScanner
         run: |
             cd /tmp
-            wget https://binaries.sonarsource.com/?prefix=Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip  
-            pwd
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip 
             ls -a
-            unzip index.html?prefix=Distribution%2Fsonar-scanner-cli%2Fsonar-scanner-6.1.0.4477.zip
+            unzip sonar-scanner-cli-6.1.0.4477.zip 
             cd -
             
  
