@@ -37,8 +37,7 @@ jobs:
           path: coverage
 
       - name: install sonar scanner
-        run:
-          command: |
+        run: |
             cd /tmp
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip
             unzip || sudo apt install unzip -y
