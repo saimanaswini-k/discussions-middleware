@@ -50,9 +50,9 @@ jobs:
             ls -a
             unzip sonar-scanner-cli-6.1.0.4477.zip 
             cd -
-            
- 
+
       - name: Run SonarScanner
+        run: mkdir ./sonar-project.properties
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN}}
