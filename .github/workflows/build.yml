@@ -47,7 +47,10 @@ jobs:
         run: |
             cd /tmp
             wget https://binaries.sonarsource.com/?prefix=Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip  
+            pwd
+            ls -a
             unzip sonar-scanner-6.1.0.4477.zip
+            cd -
             
  
       - name: Run SonarScanner
