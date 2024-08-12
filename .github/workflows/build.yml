@@ -27,9 +27,8 @@ jobs:
           path: node_modules
           key: node_modules_cache_{{ checksum "package-lock.json" }}
 
-      - run:
-          name: Install project dependencies
-          command: |
+      - name: Install project dependencies
+        run: |
             if [ ! -d "node_modules" ]; then
             npm ci -f
             fi
