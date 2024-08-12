@@ -1,0 +1,53 @@
+version: 2.1
+jobs:
+  run-test-cases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run:
+          name: Check current version of node
+          command: node -v
+      - restore_cache:
+          keys:
+            - node_modules_cache_{{ checksum "package-lock.json" }}
+      - run:
+          name: Install project dependencies
+          command: |
+            if [ ! -d "node_modules" ]; then
+            npm ci -f
+            fi
+
+      - save_cache:
+          key: node_modules_cache_{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Run Tests
+          command: npm run coverage
+
+      - store_artifacts:
+          path: coverage
+
+      - run:
+          name: install sonar scanner
+          command: |
+            cd /tmp
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip
+            unzip || sudo apt install unzip -y
+            unzip sonar-scanner-6.1.0.4477.zip
+            cd -
+            
+      - run:
+          name: Run SonarScanner
+          command: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
