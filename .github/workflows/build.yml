@@ -18,33 +18,26 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run:
-          name: Check current version of node
-          command: node -v
-      - restore_cache:
-          keys:
-            - node_modules_cache_{{ checksum "package-lock.json" }}
-      - run:
-          name: Install project dependencies
-          command: |
-            if [ ! -d "node_modules" ]; then
-            npm ci -f
-            fi
+      - name: Check current version of node
+          run: node -v
 
-      - save_cache:
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
           key: node_modules_cache_{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
 
-      - run:
-          name: Run Tests
-          command: npm run coverage
+      - name: Run test cases
+          run: npm run coverage
 
-      - store_artifacts:
+      - name: Store artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: discussion
           path: coverage
 
-      - run:
-          name: install sonar scanner
+      - name: install sonar scanner
+        run:
           command: |
             cd /tmp
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-6.1.0.4477.zip
@@ -52,6 +45,6 @@ jobs:
             unzip sonar-scanner-6.1.0.4477.zip
             cd -
 
-      - run:
-          name: Run SonarScanner
+      - name: Run sonar scanner
+        run:
           command: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
