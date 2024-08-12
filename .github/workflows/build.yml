@@ -58,4 +58,6 @@ jobs:
           SONAR_LOGIN: ${{ secrets.SONAR_LOGIN}}
           SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
           sonar.PROJECTKEY: ${{ secrets.PROJECTKEY}}
-        run: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
+        run: |
+            cat sonar-project.properties
+            /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
