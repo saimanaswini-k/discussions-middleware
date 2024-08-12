@@ -1,4 +1,8 @@
 version: 2.1
+on:
+  pull_request:
+    types: [opened, synchronize]
+    
 jobs:
   run-test-cases:
     runs-on: ubuntu-latest
@@ -47,7 +51,7 @@ jobs:
             unzip || sudo apt install unzip -y
             unzip sonar-scanner-6.1.0.4477.zip
             cd -
-            
+
       - run:
           name: Run SonarScanner
           command: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
