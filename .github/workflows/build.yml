@@ -18,9 +18,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run:
-          name: Check current version of node
-          command: node -v
+      - name: Check current version of node
+        run: node -v
 
       - name: Restore cache
         uses: actions/cache@v3
@@ -28,9 +27,8 @@ jobs:
           path: node_modules
           key: node_modules_cache_{{ checksum "package-lock.json" }}
 
-      - run: 
-          name: Run test cases
-          command: npm run coverage
+      - name: Run test cases
+        run: npm run coverage
 
       - name: Store artifact
         uses: actions/upload-artifact@v3
@@ -48,5 +46,4 @@ jobs:
             cd -
 
       - name: Run sonar scanner
-        run:
-          command: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
+        run: /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
