@@ -20,7 +20,7 @@ jobs:
 
       - run:
           name: Check current version of node
-          run: node -v
+          command: node -v
 
       - name: Restore cache
         uses: actions/cache@v3
@@ -28,8 +28,9 @@ jobs:
           path: node_modules
           key: node_modules_cache_{{ checksum "package-lock.json" }}
 
-      - name: Run test cases
-          run: npm run coverage
+      - run: 
+          name: Run test cases
+          command: npm run coverage
 
       - name: Store artifact
         uses: actions/upload-artifact@v3
