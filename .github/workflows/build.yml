@@ -18,7 +18,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check current version of node
+      - run:
+          name: Check current version of node
           run: node -v
 
       - name: Restore cache
