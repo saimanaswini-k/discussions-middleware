@@ -1,15 +1,11 @@
 name: Build and Deploy
 
 on:
-  push:
-    tags:
-      - '*' 
-    branches:
-      - master
-      - release-*
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
-  Docker-build:
+  Run-test-cases:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -46,22 +42,6 @@ jobs:
         with:
           name: discussions-middleware
           path: coverage
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ${{ vars.DOCKERHUB_USERNAME }}/discussion_middleware:${{ github.ref_name }} 
-      
 
       - name: Install SonarScanner
         run: |
