@@ -4,9 +4,9 @@ on:
   push:
     tags:
       - '*' 
-    # branches:
-    #   - master
-    #   - release-*
+    branches:
+      - master
+      - release-*
 
 jobs:
   Docker-build:

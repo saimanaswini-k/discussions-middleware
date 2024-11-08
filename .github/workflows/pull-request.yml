@@ -1,12 +1,9 @@
 name: Build and Deploy
 
 on:
-  # pull_request:
-  #   types: [opened, synchronize]
-  push:
-    tags:
-      - '*' 
-
+  pull_request:
+    types: [opened, synchronize]
+  
 jobs:
   Run-test-cases:
     runs-on: ubuntu-latest
