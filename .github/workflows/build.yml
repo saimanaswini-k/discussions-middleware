@@ -4,9 +4,9 @@ on:
   push:
     tags:
       - '*' 
-    branches:
-      - master
-      - release-*
+    # branches:
+    #   - master
+    #   - release-*
 
 jobs:
   Docker-build:
@@ -63,20 +63,20 @@ jobs:
             ${{ vars.DOCKERHUB_USERNAME }}/discussion_middleware:${{ github.ref_name }} 
       
 
-      - name: Install SonarScanner
-        run: |
-            cd /tmp
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip 
-            unzip sonar-scanner-cli-6.1.0.4477.zip 
-            cd -
+      # - name: Install SonarScanner
+      #   run: |
+      #       cd /tmp
+      #       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip 
+      #       unzip sonar-scanner-cli-6.1.0.4477.zip 
+      #       cd -
             
   
-      - name: Run SonarScanner
-        env:
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
-          sonar.PROJECTKEY: ${{ secrets.PROJECTKEY}}
-        run: |
-            cat sonar-project.properties
-            /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
+      # - name: Run SonarScanner
+      #   env:
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #     SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
+      #     sonar.PROJECTKEY: ${{ secrets.PROJECTKEY}}
+      #   run: |
+      #       cat sonar-project.properties
+      #       /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
 
