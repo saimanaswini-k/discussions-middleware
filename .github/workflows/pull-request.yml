@@ -1,0 +1,62 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  
+jobs:
+  Run-test-cases:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check current version of node
+        run: node -v
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node_modules_cache_{{ checksum "package-lock.json" }}
+
+      - name: Install project dependencies
+        run: |
+            if [ ! -d "node_modules" ]; then
+              npm ci -f
+            fi
+
+      - name: Run test cases
+        run: npm run coverage
+
+      - name: Store build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: discussions-middleware
+          path: coverage
+
+      # - name: Install SonarScanner
+      #   run: |
+      #       cd /tmp
+      #       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477.zip 
+      #       unzip sonar-scanner-cli-6.1.0.4477.zip 
+      #       cd -
+            
+  
+      # - name: Run SonarScanner
+      #   env:
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #     SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION}}
+      #     sonar.PROJECTKEY: ${{ secrets.PROJECTKEY}}
+      #   run: |
+      #       cat sonar-project.properties
+      #       /tmp/sonar-scanner-6.1.0.4477/bin/sonar-scanner
+
