@@ -1,8 +1,11 @@
 name: Build and Deploy
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  # pull_request:
+  #   types: [opened, synchronize]
+  push:
+    tags:
+      - '*' 
 
 jobs:
   Run-test-cases:
